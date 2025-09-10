@@ -2,6 +2,7 @@ body {
     background-color: #F8C8D8;
     margin: 0;
 }
+
 .Superior {
     background-color: #3E2723;
     padding: 50px 0;
@@ -34,17 +35,20 @@ a {
 
 .estirables {
     display: flex;
-    width: 600px;
-    height: 430px;
+    width: 800px;
+    height: 500px;
     margin: 0 auto;
+    justify-content: center; /* Centra el contenido horizontalmente */
+
 }
 
 .estirables img {
-    width: 33.33%;
+    width: 50%;
     flex-grow: 1;
     object-fit: cover;
-    opacity: .8;
+    opacity: .7;
     transition: all 0.5s ease;
+    box-shadow: 2px 2px 10px rgba(71, 3, 54, 0.3);
 }
 
 .estirables img:hover {
@@ -57,3 +61,10 @@ a {
     z-index: 1;
 }
 
+.img1 {
+    border-bottom-left-radius: 20px;
+}
+
+.img3 {
+    border-bottom-right-radius: 20px;
+}
