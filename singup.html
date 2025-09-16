@@ -25,9 +25,12 @@
 
         <form class="formLogin">
             <h2>Iniciar Sesion</h2>
-            <input type="text" placeholder="Usuario" required>
-            <input type="password" placeholder="Contraseña" required>
-            <p><button type="submit">Entrar</button></p>
+            <input type="text" id="email" placeholder = "Correo electrónico" required>
+            <span id = "emailError" class = "error"></span>
+            <input type="password" id="password" placeholder = "Contraseña" required>
+            <span id = "passwordError" class = "error"></span>
+            <p><button type="submit"onclick="return validarLogin()">Entrar</button></p>
+           
             
             <p>¿No tienes una cuenta? 
                 <br><a class="reg" href="#">Regístrate</a><br>
@@ -36,6 +39,7 @@
 
         
     </div>
+    <script src="js/validarLogin.js"></script>
     
 </body>
 </html>
