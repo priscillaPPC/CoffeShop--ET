@@ -3,6 +3,7 @@ const productos = [
         id: 1,
         nombre: 'Café de la casa',
         precio: 2500,
+        stock: 10,
         imagen: 'imagenes/coffe1.png',
         descripcion: 'Un clásico de nuestra cafetería, con un sabor inigualable.'
     },
@@ -10,6 +11,7 @@ const productos = [
         id: 2,
         nombre: 'Pastel de fresa',
         precio: 4500,
+        stock: 5,
         imagen: 'imagenes/cake1.png',
         descripcion: 'Delicioso pastel de vainilla con capas de crema y fresas frescas.'
     },
@@ -17,6 +19,7 @@ const productos = [
         id: 3,
         nombre: 'Helado de pistacho',
         precio: 3800,
+        stock: 8,
         imagen: 'imagenes/ice1.png',
         descripcion: 'Helado cremoso de pistacho con trozos crujientes.'
     }
@@ -55,3 +58,21 @@ function agregarAlCarrito(productoId) {
 }
 
 document.addEventListener('DOMContentLoaded', mostrarProductos);
+
+function cargarProductosTabla() {
+    const tbody = document.querySelector('#tabla-productos tbody');
+    tbody.innerHTML = "";
+
+    productos.forEach(producto => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${producto.id}</td>
+            <td>${producto.nombre}</td>
+            <td>$${producto.precio}</td>
+            <td>${producto.stock}</td>
+        `;
+        tbody.appendChild(fila);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', cargarProductosTabla);
