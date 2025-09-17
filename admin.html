@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             align-items: center;
             padding: 20px;
         }
+
         .admin-form-container {
             width: 90%;
             max-width: 800px;
@@ -19,29 +21,36 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .admin-form-container input,
         .admin-form-container select {
             margin-bottom: 15px;
         }
+
         .list-container {
             margin-top: 30px;
             width: 100%;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .error-message {
             color: rgb(131, 78, 78);
             font-size: 0.9em;
@@ -51,6 +60,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <nav class="Superior">
@@ -196,14 +206,15 @@
             document.getElementById('lista-productos-container').style.display = 'none';
             document.getElementById('lista-usuarios-container').style.display = 'none';
             document.getElementById(listId + '-container').style.display = 'block';
-            
+
             if (listId === 'usuarios') {
                 cargarUsuarios();
-            } else if (listId === 'productos') {
+            } else if (listId === 'lista-productos') {
                 cargarProductosAdmin();
             }
         }
     </script>
     <script src="js/validaciones.js"></script>
 </body>
+
 </html>
