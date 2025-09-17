@@ -1,11 +1,15 @@
 body {
     background-color: #F8C8D8;
     margin: 0;
+    font-family: sans-serif;
 }
 
 .Superior {
     background-color: #3E2723;
-    padding: 50px 0;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .Superior .elementos {
@@ -23,27 +27,26 @@ a {
 }
 
 .logo {
-    display: flex;
-    margin-top: -50px;
+    display: block;
     margin-left: 50px;
-    margin-right: auto;
     height: auto;
     width: 60px;
-    max-width: 100%;
 }
 
+.main-content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
 
 .estirables {
     display: flex;
-    width: 800px;
-    height: 500px;
-    margin: 0 auto;
-    justify-content: center; /* Centra el contenido horizontalmente */
-
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .estirables img {
-    width: 50%;
+    width: 30%;
     flex-grow: 1;
     object-fit: cover;
     opacity: .7;
@@ -68,11 +71,172 @@ a {
 .img3 {
     border-bottom-right-radius: 20px;
 }
-/* el error*/
+
+/* Estilos de formulario */
+.contLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.formLogin {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.formLogin h2 {
+    color: #3E2723;
+    margin-bottom: 20px;
+}
+
+.formLogin input,
+.formLogin select,
+.formLogin textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.formLogin button {
+    background-color: #3E2723;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.formLogin button:hover {
+    background-color: #5D4037;
+}
+
+.formLogin .reg {
+    color: #3E2723;
+    font-weight: normal;
+}
+
 .error-message {
-    color: rgb(131, 67, 67);
+    color: red;
     font-size: 0.9em;
-    display: block; 
+    display: block;
     margin-top: -10px;
     margin-bottom: 10px;
+}
+
+/* Nuevo estilo para los productos */
+.producto-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 10px;
+    background-color: #fff;
+    max-width: 300px;
+}
+
+.producto-item {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    margin: 18px;
+    padding: 18px 12px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.4s cubic-bezier(.25,.8,.25,1), box-shadow 0.4s;
+}
+
+.producto-item:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(71, 3, 54, 0.18);
+    z-index: 2;
+}
+
+.producto-item img {
+    transition: transform 0.4s cubic-bezier(.25,.8,.25,1), filter 0.4s;
+}
+.producto-item:hover img {
+    transform: scale(1.12) rotate(-2deg);
+    filter: brightness(1.1) contrast(1.1);
+}
+
+.producto-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+#productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Nuevo estilo para la página del carrito */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.cart-table th, .cart-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.cart-table th {
+    background-color: #f2f2f2;
+}
+.cart-table img {
+    width: 50px;
+    height: auto;
+}
+.quantity-controls button {
+    background-color: #3E2723;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#total-carrito {
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 20px;
+    border-top: 2px solid #3E2723;
+    padding-top: 10px;
+}
+
+#boton-pagar {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#boton-pagar:hover {
+    background-color: #45a049;
 }
