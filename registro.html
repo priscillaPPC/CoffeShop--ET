@@ -9,9 +9,6 @@
 <body>
     <nav class="Superior">
         <div class="elementos">
-            <a href="#">Nosotros</a>
-            <a href="#">Locales</a>
-            <a href="#">Compra Online</a>
             <a href="singup.html">Iniciar Sesion  </a>
         </div>
         <div>
@@ -32,8 +29,8 @@
             <span id = "passwordError" class = "error"></span>
             <input type="password" id="confirmPassword" placeholder = "Confirmar Contraseña" required>
             <span id = "confirmPasswordError" class = "error"></span>
-            <input type="tel" id="telefono" placeholder = "Teléfono (opcional)>
-            <selec id = "region" required>
+            <input type="tel" id="telefono" placeholder = "Teléfono (opcional)">
+            <select id = "region" required>
                 <option value="" >- Selecione su región -</option>
                 <option value="RM">Región Metropolitana de Santiago</option>
                 <option value="I">Región de Arica y Parinacota</option>
@@ -50,10 +47,11 @@
                 <option value="X">Región de los Lagos</option>
                 <option value="XI">Región de Aysén</option>
                 <option value="XII">Región de Magallanes y la Antártica Chilena</option>
-
             </select>
-            <span id = "regionError" class = "error"></span>
-            <select id="comuna" required>
+
+            <span id="region-error" class="error-message"></span>
+            
+            <select id="comuna" required disabled>
                 <option value="">- Seleccione una comuna -</option>
             </select>
             <span id="comuna-error" class="error-message"></span>
