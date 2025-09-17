@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="product-title">Detalle del Producto</title>
+    <link rel="stylesheet" href="estilos/estilo.css">
+    <style>
+        .product-detail-container {
+            display: flex;
+            gap: 40px;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            align-items: flex-start;
+        }
+        .product-image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .product-info {
+            flex-grow: 1;
+        }
+        .product-info h1 {
+            font-size: 2.5em;
+        }
+        .product-info .price {
+            font-size: 1.8em;
+            color: #3E2723;
+            font-weight: bold;
+        }
+        .quantity-controls {
+            margin: 20px 0;
+        }
+        .quantity-controls input {
+            width: 50px;
+            text-align: center;
+        }
+        .add-to-cart-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="Superior">
+        <div class="elementos">
+            <a href="index.html">Inicio</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="carrito.html">Carrito</a>
+            <a href="admin.html">Administrador</a>
+            <a href="singup.html">Iniciar Sesión</a>
+            <a href="registro.html">Regístrate</a>
+        </div>
+        <div>
+            <a href="index.html">
+                <img src="imagenes/logo.png" alt="Logo de la Cafeteria" class="logo">
+            </a>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="product-detail-container">
+            <div class="product-image-container">
+                <img id="product-image" src="" alt="Imagen del Producto">
+            </div>
+            <div class="product-info">
+                <h1 id="product-name"></h1>
+                <p class="price" id="product-price"></p>
+                <p id="product-description"></p>
+                <div class="quantity-controls">
+                    <label for="quantity">Cantidad:</label>
+                    <input type="number" id="quantity" value="1" min="1">
+                </div>
+                <button class="add-to-cart-btn" onclick="agregarAlCarritoDesdeDetalle()">Añadir al carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/productos.js"></script>
+    <script>
+        function agregarAlCarritoDesdeDetalle() {
+            const params = new URLSearchParams(window.location.search);
+            const productoId = parseInt(params.get('id'));
+            const cantidad = parseInt(document.getElementById('quantity').value);
+
+            const productoAñadir = productos.find(p => p.id === productoId);
+            
+            if (productoAñadir) {
+                let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+                for (let i = 0; i < cantidad; i++) {
+                    carrito.push(productoAñadir);
+                }
+
+                localStorage.setItem('carrito', JSON.stringify(carrito));
+
+                alert(`${cantidad} unidad(es) de ${productoAñadir.nombre} ha(n) sido añadida(s) al carrito.`);
+                window.location.href = 'carrito.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const productoId = parseInt(params.get('id'));
+
+            const producto = productos.find(p => p.id === productoId);
+
+            if (producto) {
+                document.getElementById('product-image').src = producto.imagen;
+                document.getElementById('product-name').innerText = producto.nombre;
+                document.getElementById('product-price').innerText = `$${producto.precio}`;
+                document.getElementById('product-description').innerText = producto.descripcion;
+            } else {
+                document.getElementById('product-name').innerText = 'Producto no encontrado';
+            }
+        });
+    </script>
+</body>
+</html>
