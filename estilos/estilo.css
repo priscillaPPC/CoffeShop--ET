@@ -22,19 +22,38 @@
     margin-top: 30px;
     width: 100%;
 }
+
+
+.admin-options a {
+    margin-right: 15px;
+    text-decoration: none;
+    background-color: #3E2723;
+    color: white;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+.admin-options a:hover {
+    background-color: #5D4037;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 th,
 td {
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
     padding: 8px;
     text-align: left;
 }
 th {
-    background-color: #f2f2f2;
+    background-color: #3E2723;
+    color: white;
+    font-weight: bold;
+    text-transform: capitalize;
 }
 .error-message {
     color: red;
@@ -43,6 +62,61 @@ th {
     margin-top: -10px;
     margin-bottom: 10px;
 }
+
+input {
+    width: 75%;
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+input:focus {
+    border: 2px solid #555;
+}
+textarea {
+    width: 75%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+}
+
+input[type="file"] {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+select {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background-color: #3E2723;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+
 /* blogs*/
 .producto-item {
     background: #fff;
@@ -139,7 +213,7 @@ body {
 
 .Superior {
     background-color: #3E2723;
-    padding: 20px 0;
+    padding: 20px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -28,6 +28,29 @@ const productos = [
     }
 ];
 
+const usuarios = [
+    {
+        rut: '12345678-9',
+        nombre: 'Juan',
+        apellido: 'Pérez',
+        email: 'juan.perez@example.com',
+        contrasena: 'password123',
+        fechaNacimiento: '01-12-2000',
+        rol: 'cliente',
+        direccion: 'Calle Falsa 123, Ciudad, País'
+    },
+    {
+        rut: '98765432-1',
+        nombre: 'María',
+        apellido: 'González',
+        email: 'maria.gonzalez@example.com',
+        contrasena: 'password456',
+        fechaNacimiento: '15-05-1995',
+        rol: 'admin',
+        direccion: 'Avenida Siempre Viva 742, Ciudad, País'
+    }
+]
+
 function mostrarProductos() {
     const productosGrid = document.getElementById('productos-grid');
 
@@ -44,14 +67,14 @@ function mostrarProductos() {
             <p>${producto.descripcion}</p>
             <button onclick="agregarAlCarrito(${producto.id})">Añadir al carrito</button>
         `;
-        
+
         productosGrid.appendChild(productoDiv);
     });
 }
 
 function agregarAlCarrito(productoId) {
     const productoAñadir = productos.find(p => p.id === productoId);
-    
+
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     carrito.push(productoAñadir);
     localStorage.setItem('carrito', JSON.stringify(carrito));
@@ -62,9 +85,13 @@ function agregarAlCarrito(productoId) {
 
 document.addEventListener('DOMContentLoaded', mostrarProductos);
 
+
+// Funciones gestion productos
+
+
 function cargarProductosTabla() {
     const tbody = document.querySelector('#tabla-productos tbody');
-    tbody.innerHTML = ""; 
+    tbody.innerHTML = "";
 
     productos.forEach(producto => {
         const fila = document.createElement('tr');
@@ -78,15 +105,6 @@ function cargarProductosTabla() {
         tbody.appendChild(fila);
     });
 }
-
-function eliminarProducto(id) {
-    const index = productos.findIndex(p => p.id === id);
-    if (index !== -1) {
-        productos.splice(index, 1);
-        cargarProductosTabla();
-    }
-}
-
 
 function agregarProducto() {
     var codigo = productos.length + 1;
@@ -111,7 +129,178 @@ function agregarProducto() {
     localStorage.setItem('productos', JSON.stringify(productos));
     alert("Producto agregado exitosamente.");
     cargarProductosTabla();
-    document.getElementById('producto-form').reset();
+
+    document.querySelector('#producto-form form').reset();
 }
 
+function eliminarProducto(id) {
+    const index = productos.findIndex(p => p.id === id);
+    if (index !== -1) {
+        productos.splice(index, 1);
+        cargarProductosTabla();
+    }
+}
+
+
+function editarProducto(id) {
+    const index = productos.findIndex(p => p.id === id);
+    if (index === -1) return;
+    const tbody = document.querySelector('#tabla-productos tbody');
+    const row = tbody.rows[index];
+    const producto = productos[index];
+    row.cells[0].innerHTML = `<input type="number" value="${producto.id}" id="edit-id">`;
+    row.cells[1].innerHTML = `<input type="text" value="${producto.nombre}" id="edit-nombre">`;
+    row.cells[2].innerHTML = `<input type="number" value="${producto.precio}" id="edit-precio" min="0">`;
+    row.cells[3].innerHTML = `<input type="number" value="${producto.stock}" id="edit-stock" min="0">`;
+    row.cells[4].innerHTML = `
+        <button onclick="guardarEdicionProducto(${index})">Guardar</button>
+        <button onclick="cargarProductosTabla()">Cancelar</button>
+    `;
+}
+
+function guardarEdicionProducto(index) {
+    const nuevoId = parseInt(document.getElementById('edit-id').value);
+    const nuevoNombre = document.getElementById('edit-nombre').value.trim();
+    const nuevoPrecio = parseFloat(document.getElementById('edit-precio').value);
+    const nuevoStock = parseInt(document.getElementById('edit-stock').value);
+    if (productos.some((p, i) => p.id === nuevoId && i !== index)) {
+        alert('El ID ya existe en otro producto.');
+        return;
+    }
+    if (!nuevoNombre || isNaN(nuevoPrecio) || isNaN(nuevoStock)) {
+        alert('Todos los campos son obligatorios y deben ser válidos.');
+        return;
+    }
+    productos[index].id = nuevoId;
+    productos[index].nombre = nuevoNombre;
+    productos[index].precio = nuevoPrecio;
+    productos[index].stock = nuevoStock;
+
+    localStorage.setItem('productos', JSON.stringify(productos));
+    cargarProductosTabla();
+    alert('Producto editado correctamente.');
+}
+
+// Funciones para gestionar usuarios
+
+function agregarUsuario() {
+    var rut = document.getElementById('runUsuario').value.trim();
+    var nombre = document.getElementById('nombreUsuario').value.trim();
+    var apellido = document.getElementById('apellidoUsuario').value.trim();
+    var email = document.getElementById('correoUsuario').value.trim();
+    var fechaNacimiento = document.getElementById('fechaNacimientoUsuario').value.trim();
+    var tipoUsuario = document.getElementById('tipoUsuario').value.trim();
+    var direccion = document.getElementById('direccionUsuario').value.trim();
+
+    // Validación básica
+    if (!rut || !nombre || !apellido || !email || !tipoUsuario || !direccion) {
+        alert("Todos los campos obligatorios deben estar completos.");
+        return false;
+    }
+
+    // Validar que el RUT no se repita
+    if (usuarios.some(u => u.rut === rut)) {
+        alert("El RUT ya está registrado.");
+        return false;
+    }
+
+    var nuevoUsuario = {
+        rut: rut,
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        fechaNacimiento: fechaNacimiento,
+        rol: tipoUsuario,
+        direccion: direccion
+    };
+
+    usuarios.push(nuevoUsuario);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    alert("Usuario agregado exitosamente.");
+    cargarUsuariosTabla();
+
+    document.querySelector('#usuario-form form').reset();
+    return false; // Evita el envío del formulario
+}
+
+function eliminarUsuario(rut) {
+    const index = usuarios.findIndex(u => u.rut === rut);
+    if (index !== -1) {
+        usuarios.splice(index, 1);
+        cargarUsuariosTabla();
+    }
+}
+
+function editarUsuario(rut) {
+    const index = usuarios.findIndex(u => u.rut === rut);
+    if (index === -1) return;
+    const tbody = document.querySelector('#tabla-usuarios tbody');
+    const row = tbody.rows[index];
+    const usuario = usuarios[index];
+
+    row.cells[0].innerHTML = `<input type="text" value="${usuario.rut}" id="edit-rut">`;
+    row.cells[1].innerHTML = `<input type="text" value="${usuario.nombre}" id="edit-nombre">`;
+    row.cells[2].innerHTML = `<input type="text" value="${usuario.apellido}" id="edit-apellido">`;
+    row.cells[3].innerHTML = `<input type="email" value="${usuario.email}" id="edit-email">`;
+    row.cells[4].innerHTML = `<select id="edit-rol">
+        <option value="administrador" ${usuario.rol === "administrador" ? "selected" : ""}>Administrador</option>
+        <option value="vendedor" ${usuario.rol === "vendedor" ? "selected" : ""}>Vendedor</option>
+        <option value="cliente" ${usuario.rol === "cliente" ? "selected" : ""}>Cliente</option>
+    </select>`;
+    row.cells[5].innerHTML = `
+        <button onclick="guardarEdicionUsuario(${index})">Guardar</button>
+        <button onclick="cargarUsuariosTabla()">Cancelar</button>
+    `;
+}
+
+function guardarEdicionUsuario(index) {
+    const nuevoRut = document.getElementById('edit-rut').value.trim();
+    const nuevoNombre = document.getElementById('edit-nombre').value.trim();
+    const nuevoApellido = document.getElementById('edit-apellido').value.trim();
+    const nuevoEmail = document.getElementById('edit-email').value.trim();
+    const nuevoRol = document.getElementById('edit-rol').value;
+
+    // Validar que el RUT no se repita (excepto el actual)
+    if (usuarios.some((u, i) => u.rut === nuevoRut && i !== index)) {
+        alert('El RUT ya existe en otro usuario.');
+        return;
+    }
+    if (!nuevoRut || !nuevoNombre || !nuevoApellido || !nuevoEmail || !nuevoRol) {
+        alert('Todos los campos son obligatorios.');
+        return;
+    }
+
+    usuarios[index].rut = nuevoRut;
+    usuarios[index].nombre = nuevoNombre;
+    usuarios[index].apellido = nuevoApellido;
+    usuarios[index].email = nuevoEmail;
+    usuarios[index].rol = nuevoRol;
+
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    cargarUsuariosTabla();
+    alert('Usuario editado correctamente.');
+}
+
+
+function cargarUsuariosTabla() {
+    const tbody = document.querySelector('#tabla-usuarios tbody');
+    tbody.innerHTML = "";
+
+    usuarios.forEach(usuario => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${usuario.rut}</td>
+            <td>${usuario.nombre}</td>
+            <td>${usuario.apellido}</td>
+            <td>${usuario.email}</td>
+            <td>${usuario.rol}</td>
+            <td>
+                <button onclick="eliminarUsuario('${usuario.rut}')">Eliminar</button>
+                <button onclick="editarUsuario('${usuario.rut}')">Editar</button>
+            </td>
+        `;
+        tbody.appendChild(fila);
+    });
+}
+document.addEventListener('DOMContentLoaded', cargarUsuariosTabla);
 document.addEventListener('DOMContentLoaded', cargarProductosTabla);
