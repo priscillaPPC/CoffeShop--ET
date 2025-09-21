@@ -22,13 +22,15 @@
         <form class="formLogin" onsubmit = "return validarRegistro()">
             <h2>Registo de usuario</h2>
             <input type="text" id="nombreCompleto" placeholder = "Nombre completo" required>
-            <span id = "nombreError" class = "error"></span>
-            <input type="text" id="email" placeholder = "Correo electrónico" required>
-            <span id = "emailError" class = "error"></span>
-            <input type="password" id="password" placeholder = "Contraseña" required>
-            <span id = "passwordError" class = "error"></span>
-            <input type="password" id="confirmPassword" placeholder = "Confirmar Contraseña" required>
-            <span id = "confirmPasswordError" class = "error"></span>
+            <span id="nombre-error" class="error-message"></span>
+            <input type="text" id="correo" placeholder = "Correo electrónico" required>
+            <span id="correo-error" class="error-message"></span>
+            <input type="text" id="repetirCorreo" placeholder = "Repetir correo electrónico" required>
+            <span id="repetir-correo-error" class="error-message"></span>
+            <input type="password" id="contrasena" placeholder = "Contraseña" required>
+            <span id="contrasena-error" class="error-message"></span>
+            <input type="password" id="confirmarContrasena" placeholder = "Confirmar Contraseña" required>
+            <span id="confirmar-contrasena-error" class="error-message"></span>
             <input type="tel" id="telefono" placeholder = "Teléfono (opcional)">
             <select id = "region" required>
                 <option value="" >- Selecione su región -</option>
@@ -60,7 +62,7 @@
         </form>
     </div>
 
-    <script src="js/validaciones.js"></script>
+    <script src="js/validations.js"></script>
 </div>
 
 <script>
