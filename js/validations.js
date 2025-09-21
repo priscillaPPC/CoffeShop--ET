@@ -2,6 +2,9 @@
 let indiceProductoEditar = -1;
 let indiceUsuarioEditar = -1;
 
+// Patrón de email único para todas las validaciones
+const emailPattern = /^[^\s@]+@(?:duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
+
 
 
 // Valida el formulario de inicio de sesión
@@ -17,7 +20,6 @@ function validarLogin() {
         emailError.innerText = 'El correo electrónico es requerido.';
         hasError = true;
     } else {
-        const emailPattern = /^[^\s@]+@(?:duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
         if (!emailPattern.test(email)) {
             emailError.innerText = 'Por favor, ingrese un correo válido de @duoc.cl, @profesor.duoc.cl o @gmail.com.';
             hasError = true;
@@ -66,7 +68,6 @@ function validarRegistro() {
         nombreError.innerText = 'El nombre completo es requerido.';
         hasError = true;
     }
-    const emailPattern = /^[^\s@]+@(?:duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
     if (!correo || !emailPattern.test(correo)) {
         correoError.innerText = 'Por favor, ingrese un correo válido.';
         hasError = true;
@@ -131,7 +132,7 @@ function validarContacto() {
         nombreError.innerText = 'El nombre no debe exceder los 100 caracteres.';
         hasError = true;
     }
-    const emailPattern = /^[^\s@]+@(?:duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
+    const emailPattern = /^[^\s@]+@(?:duocus\.cl|profesor\.duoc\.cl|gmail\.com)$/;
     if (!correo) {
         correoError.innerText = 'El correo es requerido.';
         hasError = true;
@@ -266,7 +267,6 @@ function validarUsuarioAdmin() {
         apellidoError.innerText = 'El apellido no debe exceder los 100 caracteres.';
         hasError = true;
     }
-    const emailPattern = /^[^\s@]+@(?:duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
     if (!correo) {
         correoError.innerText = 'El correo es requerido.';
         hasError = true;
