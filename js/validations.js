@@ -132,7 +132,7 @@ function validarContacto() {
         nombreError.innerText = 'El nombre no debe exceder los 100 caracteres.';
         hasError = true;
     }
-    const emailPattern = /^[^\s@]+@(?:duocus\.cl|profesor\.duoc\.cl|gmail\.com)$/;
+    const emailPattern = /^[^\s@]+@(?:duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
     if (!correo) {
         correoError.innerText = 'El correo es requerido.';
         hasError = true;
@@ -428,4 +428,3 @@ function editarUsuario(index) {
 }
 
 // Ejecuta la función al cargar la página
-document.addEventListener('DOMContentLoaded', cargarComunas);
