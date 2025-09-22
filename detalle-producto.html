@@ -45,42 +45,53 @@
 
     <script src="js/productos.js"></script>
     <script>
-        function agregarAlCarritoDesdeDetalle() {
-            const params = new URLSearchParams(window.location.search);
-            const productoId = parseInt(params.get('id'));
-            const cantidad = parseInt(document.getElementById('quantity').value);
+    function agregarAlCarritoDesdeDetalle() {
+        const params = new URLSearchParams(window.location.search);
+        const productoId = parseInt(params.get('id'));
+        const cantidad = parseInt(document.getElementById('quantity').value);
 
-            const productoAñadir = productos.find(p => p.id === productoId);
-            
-            if (productoAñadir) {
-                let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        // Buscar primero en LocalStorage
+        const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+        let productoAñadir = productosLS.find(p => p.id === productoId);
 
-                for (let i = 0; i < cantidad; i++) {
-                    carrito.push(productoAñadir);
-                }
-
-                localStorage.setItem('carrito', JSON.stringify(carrito));
-
-                alert(`${cantidad} unidad(es) de ${productoAñadir.nombre} ha(n) sido añadida(s) al carrito.`);
-                window.location.href = 'carrito.html';
-            }
+        // Si no está en LocalStorage, buscar en el array por defecto
+        if (!productoAñadir && typeof productos !== "undefined") {
+            productoAñadir = productos.find(p => p.id === productoId);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const productoId = parseInt(params.get('id'));
-
-            const producto = productos.find(p => p.id === productoId);
-
-            if (producto) {
-                document.getElementById('product-image').src = producto.imagen;
-                document.getElementById('product-name').innerText = producto.nombre;
-                document.getElementById('product-price').innerText = `$${producto.precio}`;
-                document.getElementById('product-description').innerText = producto.descripcion;
-            } else {
-                document.getElementById('product-name').innerText = 'Producto no encontrado';
+        if (productoAñadir) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            for (let i = 0; i < cantidad; i++) {
+                carrito.push(productoAñadir);
             }
-        });
-    </script>
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            alert(`${cantidad} unidad(es) de ${productoAñadir.nombre} ha(n) sido añadida(s) al carrito.`);
+            window.location.href = 'carrito.html';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const productoId = parseInt(params.get('id'));
+
+        // Buscar primero en LocalStorage
+        const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+        let producto = productosLS.find(p => p.id === productoId);
+
+        // Si no está en LocalStorage, buscar en el array por defecto
+        if (!producto && typeof productos !== "undefined") {
+            producto = productos.find(p => p.id === productoId);
+        }
+
+        if (producto) {
+            document.getElementById('product-image').src = producto.imagen;
+            document.getElementById('product-name').innerText = producto.nombre;
+            document.getElementById('product-price').innerText = `$${producto.precio}`;
+            document.getElementById('product-description').innerText = producto.descripcion;
+        } else {
+            document.getElementById('product-name').innerText = 'Producto no encontrado';
+        }
+    });
+</script>
 </body>
 </html>

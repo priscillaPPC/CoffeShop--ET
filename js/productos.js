@@ -118,12 +118,40 @@ function cargarProductosTabla() {
 }
 
 function agregarProducto() {
-    var codigo = productos.length + 1;
     var nombre = document.getElementById('nombreProducto').value;
     var precio = document.getElementById('precioProducto').value;
     var stock = document.getElementById('stockProducto').value;
     var categoria = document.getElementById('categoriaProducto').value;
-    var imagen = document.getElementById('imagenProducto').value;
+    var descripcion = document.getElementById('descripcionProducto').value;
+    var imagenInput = document.getElementById('imagenProducto');
+    var imagenArchivo = imagenInput.files[0];
+
+    if (!nombre || !precio || !stock || !categoria) {
+        alert("Todos los campos obligatorios deben estar completos.");
+        return false;
+    }
+
+    if (imagenArchivo) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var imagenBase64 = e.target.result;
+            guardarProductoConImagen(imagenBase64);
+        };
+        reader.readAsDataURL(imagenArchivo);
+    } else {
+        guardarProductoConImagen(""); // Sin imagen
+    }
+
+    return false; // Evita el envío normal del formulario
+}
+
+function guardarProductoConImagen(imagenBase64) {
+    let productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+    var codigo = productosLS.length > 0 ? Math.max(...productosLS.map(p => p.id)) + 1 : 1;
+    var nombre = document.getElementById('nombreProducto').value;
+    var precio = document.getElementById('precioProducto').value;
+    var stock = document.getElementById('stockProducto').value;
+    var categoria = document.getElementById('categoriaProducto').value;
     var descripcion = document.getElementById('descripcionProducto').value;
 
     var nuevoProducto = {
@@ -132,16 +160,15 @@ function agregarProducto() {
         precio: parseFloat(precio),
         stock: parseInt(stock),
         categoria: categoria,
-        imagen: imagen,
+        imagen: imagenBase64,
         descripcion: descripcion
     };
 
-    productos.push(nuevoProducto);
-    localStorage.setItem('productos', JSON.stringify(productos));
+    productosLS.push(nuevoProducto);
+    localStorage.setItem('productos', JSON.stringify(productosLS));
     alert("Producto agregado exitosamente.");
     cargarProductosTabla();
-
-
+    document.querySelector('#producto-form form').reset();
 }
 
 function eliminarProducto(id) {
