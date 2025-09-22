@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', mostrarCarrito);
 
 function mostrarCarrito() {
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
     const tbody = document.getElementById('productos-en-carrito');
     const totalSpan = document.getElementById('total-precio');
     const mensajeVacio = document.getElementById('carrito-vacio-mensaje');
@@ -21,13 +22,15 @@ function mostrarCarrito() {
         botonPagar.style.display = 'block';
     }
 
-    // Contar cantidad
+    // Agrupar productos por id
     const productosAgrupados = {};
     carrito.forEach(producto => {
-        if (!productosAgrupados[producto.id]) {
-            productosAgrupados[producto.id] = { ...producto, cantidad: 1 };
+        // Actualizar datos desde productosLS
+        const productoActual = productosLS.find(p => p.id === producto.id) || producto;
+        if (!productosAgrupados[productoActual.id]) {
+            productosAgrupados[productoActual.id] = { ...productoActual, cantidad: 1 };
         } else {
-            productosAgrupados[producto.id].cantidad++;
+            productosAgrupados[productoActual.id].cantidad++;
         }
     });
 
@@ -54,7 +57,6 @@ function mostrarCarrito() {
 
     totalSpan.textContent = total;
 }
-
 function eliminarDelCarrito(id) {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     // Elimina todos los productos con ese id

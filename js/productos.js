@@ -53,18 +53,21 @@ const usuarios = [
 
 function mostrarProductos() {
     const productosGrid = document.getElementById('productos-grid');
+    productosGrid.innerHTML = ""; 
 
-    productos.forEach(producto => {
+    const productosLS = JSON.parse(localStorage.getItem('productos')) || productos;
+
+    productosLS.forEach(producto => {
         const productoDiv = document.createElement('div');
         productoDiv.classList.add('producto-item');
 
         productoDiv.innerHTML = `
             <a href="detalle-producto.html?id=${producto.id}">
                 <img src="${producto.imagen}" alt="${producto.nombre}">
-                <h3>${producto.nombre}</h3>
             </a>
-            <p>$${producto.precio}</p>
+            <h3>${producto.nombre}</h3>
             <p>${producto.descripcion}</p>
+            <p>$${producto.precio}</p>
             <button onclick="agregarAlCarrito(${producto.id})">Añadir al carrito</button>
         `;
 
@@ -73,34 +76,42 @@ function mostrarProductos() {
 }
 
 function agregarAlCarrito(productoId) {
-    const productoAñadir = productos.find(p => p.id === productoId);
+    const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+    const productoAñadir = productosLS.find(p => p.id === productoId);
+    if (!productoAñadir) return;
 
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     carrito.push(productoAñadir);
     localStorage.setItem('carrito', JSON.stringify(carrito));
-
     alert(`${productoAñadir.nombre} ha sido añadido al carrito.`);
-    console.log(carrito);
 }
 
 document.addEventListener('DOMContentLoaded', mostrarProductos);
 
 
-// Funciones gestion productos
+
 
 
 function cargarProductosTabla() {
+    let productosLS = JSON.parse(localStorage.getItem('productos'));
+    if (productosLS === null) {
+        localStorage.setItem('productos', JSON.stringify(productos));
+        productosLS = [...productos];
+    }
     const tbody = document.querySelector('#tabla-productos tbody');
     tbody.innerHTML = "";
 
-    productos.forEach(producto => {
+    productosLS.forEach(producto => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
             <td>${producto.id}</td>
             <td>${producto.nombre}</td>
             <td>$${producto.precio}</td>
             <td>${producto.stock}</td>
-            <td><button onclick="eliminarProducto(${producto.id})">Eliminar</button> <button onclick="editarProducto(${producto.id})">Editar</button></td>
+            <td>
+                <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                <button onclick="editarProducto(${producto.id})">Editar</button>
+            </td>
         `;
         tbody.appendChild(fila);
     });
@@ -130,32 +141,62 @@ function agregarProducto() {
     alert("Producto agregado exitosamente.");
     cargarProductosTabla();
 
-    document.querySelector('#producto-form form').reset();
+
 }
 
 function eliminarProducto(id) {
+    const productos = JSON.parse(localStorage.getItem('productos')) || [];
     const index = productos.findIndex(p => p.id === id);
     if (index !== -1) {
         productos.splice(index, 1);
+        localStorage.setItem('productos', JSON.stringify(productos));
         cargarProductosTabla();
     }
 }
 
 
 function editarProducto(id) {
-    const index = productos.findIndex(p => p.id === id);
+    const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+    const index = productosLS.findIndex(p => p.id === id);
     if (index === -1) return;
     const tbody = document.querySelector('#tabla-productos tbody');
     const row = tbody.rows[index];
-    const producto = productos[index];
+    const producto = productosLS[index];
+
     row.cells[0].innerHTML = `<input type="number" value="${producto.id}" id="edit-id">`;
     row.cells[1].innerHTML = `<input type="text" value="${producto.nombre}" id="edit-nombre">`;
     row.cells[2].innerHTML = `<input type="number" value="${producto.precio}" id="edit-precio" min="0">`;
     row.cells[3].innerHTML = `<input type="number" value="${producto.stock}" id="edit-stock" min="0">`;
     row.cells[4].innerHTML = `
-        <button onclick="guardarEdicionProducto(${index})">Guardar</button>
+        <button onclick="guardarEdicionProductoLS(${index})">Guardar</button>
         <button onclick="cargarProductosTabla()">Cancelar</button>
     `;
+}
+
+function guardarEdicionProductoLS(index) {
+    const productosLS = JSON.parse(localStorage.getItem('productos')) || [];
+    const nuevoId = parseInt(document.getElementById('edit-id').value);
+    const nuevoNombre = document.getElementById('edit-nombre').value.trim();
+    const nuevoPrecio = parseFloat(document.getElementById('edit-precio').value);
+    const nuevoStock = parseInt(document.getElementById('edit-stock').value);
+
+    if (productosLS.some((p, i) => p.id === nuevoId && i !== index)) {
+        alert('El ID ya existe en otro producto.');
+        return;
+    }
+    if (!nuevoNombre || isNaN(nuevoPrecio) || isNaN(nuevoStock)) {
+        alert('Todos los campos son obligatorios y deben ser válidos.');
+        return;
+    }
+
+    productosLS[index].id = nuevoId;
+    productosLS[index].nombre = nuevoNombre;
+    productosLS[index].precio = nuevoPrecio;
+    productosLS[index].stock = nuevoStock;
+
+    localStorage.setItem('productos', JSON.stringify(productosLS));
+    cargarProductosTabla();
+    alert('Producto editado correctamente.');
 }
 
 function guardarEdicionProducto(index) {
@@ -181,7 +222,6 @@ function guardarEdicionProducto(index) {
     alert('Producto editado correctamente.');
 }
 
-// Funciones para gestionar usuarios
 
 function agregarUsuario() {
     var rut = document.getElementById('runUsuario').value.trim();
@@ -192,15 +232,20 @@ function agregarUsuario() {
     var tipoUsuario = document.getElementById('tipoUsuario').value.trim();
     var direccion = document.getElementById('direccionUsuario').value.trim();
 
-    // Validación básica
     if (!rut || !nombre || !apellido || !email || !tipoUsuario || !direccion) {
         alert("Todos los campos obligatorios deben estar completos.");
         return false;
     }
 
-    // Validar que el RUT no se repita
-    if (usuarios.some(u => u.rut === rut)) {
+    let usuariosLS = JSON.parse(localStorage.getItem('usuarios')) || [...usuarios];
+
+    if (usuariosLS.some(u => u.rut === rut)) {
         alert("El RUT ya está registrado.");
+        return false;
+    }
+
+    if (usuariosLS.some(u => u.email === email)) {
+        alert("El correo electrónico ya está registrado.");
         return false;
     }
 
@@ -214,29 +259,32 @@ function agregarUsuario() {
         direccion: direccion
     };
 
-    usuarios.push(nuevoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    usuariosLS.push(nuevoUsuario);
+    localStorage.setItem('usuarios', JSON.stringify(usuariosLS));
     alert("Usuario agregado exitosamente.");
     cargarUsuariosTabla();
 
     document.querySelector('#usuario-form form').reset();
-    return false; // Evita el envío del formulario
+    return false; 
 }
 
 function eliminarUsuario(rut) {
-    const index = usuarios.findIndex(u => u.rut === rut);
+    let usuariosLS = JSON.parse(localStorage.getItem('usuarios')) || [...usuarios];
+    const index = usuariosLS.findIndex(u => u.rut === rut);
     if (index !== -1) {
-        usuarios.splice(index, 1);
+        usuariosLS.splice(index, 1);
+        localStorage.setItem('usuarios', JSON.stringify(usuariosLS));
         cargarUsuariosTabla();
     }
 }
 
 function editarUsuario(rut) {
-    const index = usuarios.findIndex(u => u.rut === rut);
+    let usuariosLS = JSON.parse(localStorage.getItem('usuarios')) || [...usuarios];
+    const index = usuariosLS.findIndex(u => u.rut === rut);
     if (index === -1) return;
     const tbody = document.querySelector('#tabla-usuarios tbody');
     const row = tbody.rows[index];
-    const usuario = usuarios[index];
+    const usuario = usuariosLS[index];
 
     row.cells[0].innerHTML = `<input type="text" value="${usuario.rut}" id="edit-rut">`;
     row.cells[1].innerHTML = `<input type="text" value="${usuario.nombre}" id="edit-nombre">`;
@@ -248,20 +296,20 @@ function editarUsuario(rut) {
         <option value="cliente" ${usuario.rol === "cliente" ? "selected" : ""}>Cliente</option>
     </select>`;
     row.cells[5].innerHTML = `
-        <button onclick="guardarEdicionUsuario(${index})">Guardar</button>
+        <button onclick="guardarEdicionUsuarioLS(${index})">Guardar</button>
         <button onclick="cargarUsuariosTabla()">Cancelar</button>
     `;
 }
 
-function guardarEdicionUsuario(index) {
+function guardarEdicionUsuarioLS(index) {
+    let usuariosLS = JSON.parse(localStorage.getItem('usuarios')) || [...usuarios];
     const nuevoRut = document.getElementById('edit-rut').value.trim();
     const nuevoNombre = document.getElementById('edit-nombre').value.trim();
     const nuevoApellido = document.getElementById('edit-apellido').value.trim();
     const nuevoEmail = document.getElementById('edit-email').value.trim();
     const nuevoRol = document.getElementById('edit-rol').value;
 
-    // Validar que el RUT no se repita (excepto el actual)
-    if (usuarios.some((u, i) => u.rut === nuevoRut && i !== index)) {
+    if (usuariosLS.some((u, i) => u.rut === nuevoRut && i !== index)) {
         alert('El RUT ya existe en otro usuario.');
         return;
     }
@@ -270,23 +318,27 @@ function guardarEdicionUsuario(index) {
         return;
     }
 
-    usuarios[index].rut = nuevoRut;
-    usuarios[index].nombre = nuevoNombre;
-    usuarios[index].apellido = nuevoApellido;
-    usuarios[index].email = nuevoEmail;
-    usuarios[index].rol = nuevoRol;
+    usuariosLS[index].rut = nuevoRut;
+    usuariosLS[index].nombre = nuevoNombre;
+    usuariosLS[index].apellido = nuevoApellido;
+    usuariosLS[index].email = nuevoEmail;
+    usuariosLS[index].rol = nuevoRol;
 
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    localStorage.setItem('usuarios', JSON.stringify(usuariosLS));
     cargarUsuariosTabla();
     alert('Usuario editado correctamente.');
 }
 
-
 function cargarUsuariosTabla() {
+    let usuariosLS = JSON.parse(localStorage.getItem('usuarios'));
+    if (usuariosLS === null) {
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        usuariosLS = [...usuarios];
+    }
     const tbody = document.querySelector('#tabla-usuarios tbody');
     tbody.innerHTML = "";
 
-    usuarios.forEach(usuario => {
+    usuariosLS.forEach(usuario => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
             <td>${usuario.rut}</td>
