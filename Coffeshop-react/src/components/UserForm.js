@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-import { getUsersLS, regionesComunas } from '../data/data';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { getUsersLS } from '../data/data';
 
 // Componente para crear y editar usuarios en el panel de administrador
 

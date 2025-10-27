@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Row, Col } from 'react-bootstrap';
-import { getProductsLS, addToCartLS, productosIniciales } from '../data/data'; 
+import { getProductsLS, addToCartLS } from '../data/data'; 
 
 const ProductList = () => {
 
