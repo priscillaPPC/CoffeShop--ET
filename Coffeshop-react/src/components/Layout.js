@@ -16,10 +16,10 @@ const Layout = ({ children, setView = () => {} }) => {
 
     return (
         <>
-            <Navbar expand="lg" className="sticky-top" style={{ backgroundColor: '#3E2723' }} variant="dark">
+            <Navbar expand="lg" className="sticky-top mi-navbar" variant="dark">
                 <Container>
                     
-                    <Navbar.Brand 
+                        <Navbar.Brand 
                         onClick={() => setView('home')} 
                         style={{ cursor: 'pointer', padding: 0 }} 
                     >
@@ -28,7 +28,6 @@ const Layout = ({ children, setView = () => {} }) => {
                             src="/imagenes/logo.png" 
                             alt="Logo de la Cafetería" 
                             className="logo" 
-                            style={{ height: '40px' }} 
                         />
                     </Navbar.Brand>
 
