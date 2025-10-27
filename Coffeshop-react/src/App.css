@@ -1,6 +1,6 @@
 /* General */
 body {
-    background-color: #F8C8D8;
+    background-color: #F8C8D8 !important;
     margin: 0;
     font-family: sans-serif;
 }
@@ -9,7 +9,7 @@ body {
 
 /* Header/Navegación */
 .sticky-top {
-    background-color: #3E2723;
+    background-color: #291817;
     padding: 16px 20px; 
     display: flex;
     align-items: center;
@@ -47,6 +47,16 @@ body {
 }
 
 /* Enlaces */
+.producto-item a {
+    color: #727272dc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.producto-item:hover a {
+    color: #202020;
+}
+
 a {
     color: white;
     text-decoration: none;
@@ -144,6 +154,14 @@ a {
 }
 
 /* Productos */
+
+.producto-item {
+  background-color: #f0e1ed !important; /*El Important hace que se sobreponga a los estilos anteriores o los de Bootstrap*/
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 .producto-item {
     background: #fff;
     border-radius: 12px;

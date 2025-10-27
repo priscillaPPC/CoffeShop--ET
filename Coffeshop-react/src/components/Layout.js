@@ -51,7 +51,7 @@ const Layout = ({ children, setView = () => {} }) => {
                             variant="success"
                             onClick={() => setView('carrito')}
                             className="ms-3"
-                            style={{ backgroundColor: '#af4c82ff', borderColor: '#4CAF50' }}
+                            style={{ backgroundColor: '#af4c82ff', borderColor: '#ffffffff' }}
                         >
                             🛒 ${getCartTotal()}
                         </Button>
